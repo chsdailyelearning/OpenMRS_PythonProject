@@ -3,6 +3,8 @@ import time
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
 from Utilities.readProperties import ReadConfig
 from pageObjects.loginPage import login
 from pageObjects.registerPatientPage import regPatient
@@ -13,6 +15,14 @@ from Utilities.randomDataGeneratorUtility import randomUtil
 class Test_080_regPatient:
     driverPath = Service("C:\\Users\\chand\\PycharmProjects\\OpenMRS_PythonProject\\Utilities\\chromedriver.exe")
     driver = webdriver.Chrome(service=driverPath)
+
+    '''
+    driverPath = Service("C:\\Users\\chand\\PycharmProjects\\OpenMRS_PythonProject\\Utilities\\chromedriver.exe")
+    option=webdriver.ChromeOptions()
+    option.add_argument("--headless")
+    driver = webdriver.Chrome(service=driverPath,options=option)
+    '''
+
     url = ReadConfig.getAppUrl()
     userName = ReadConfig.getAppUserName()
     password = ReadConfig.getAppPassword()
@@ -22,6 +32,7 @@ class Test_080_regPatient:
 
     def test_validatePatientRegistration(self):
         try:
+            #self.driver.implicitly_wait(10)
             self.driver.get(self.url)
             self.lp = login(self.driver)
             self.lp.setUserName(self.userName)
@@ -50,8 +61,7 @@ class Test_080_regPatient:
             self.rp.clickNextBtn()
             self.rp.clickNextBtn()
             self.rp.clickSubmit()
-            time.sleep(10)
         except Exception as exceptionMessage:
-            print("====>You have not given proper xpath or id or soon<===="+str(exceptionMessage))
-        finally:
-            self.rp.clickLogoutLink()
+            print("====>You have not given proper xpath or id <===="+str(exceptionMessage))
+        #finally:
+            #self.rp.clickLogoutLink()
