@@ -14,7 +14,7 @@ class regPatient:
     tb_year_id="birthdateYear-field"
     tb_address1_id="address1"
     tb_phoneNumber_name="phoneNumber"
-    btn_submit_id="submi"
+    btn_submit_id="submit"
     link_logout_xpath="//div[@id='navbarSupportedContent']/ul/li[3]/a/i"
 
     def __init__(self, driver):
