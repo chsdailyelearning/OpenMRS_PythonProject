@@ -1,5 +1,6 @@
 import time
 
+import self
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.service import Service
@@ -10,7 +11,7 @@ from pageObjects.loginPage import login
 from pageObjects.registerPatientPage import regPatient
 from Utilities.excelUtility import excel
 from Utilities.randomDataGeneratorUtility import randomUtil
-
+from Utilities.customLogging import LogGen
 
 class Test_080_regPatient:
     driverPath = Service("C:\\Users\\chand\\PycharmProjects\\OpenMRS_PythonProject\\Utilities\\chromedriver.exe")
@@ -22,7 +23,7 @@ class Test_080_regPatient:
     option.add_argument("--headless")
     driver = webdriver.Chrome(service=driverPath,options=option)
     '''
-
+    lv=LogGen.log()
     url = ReadConfig.getAppUrl()
     userName = ReadConfig.getAppUserName()
     password = ReadConfig.getAppPassword()
@@ -33,12 +34,14 @@ class Test_080_regPatient:
     def test_validatePatientRegistration(self):
         try:
             #self.driver.implicitly_wait(10)
+            self.lv.info("Test RegPatient execution started.")
             self.driver.get(self.url)
             self.lp = login(self.driver)
             self.lp.setUserName(self.userName)
             self.lp.setPassword(self.password)
             self.lp.clickLocation()
             self.lp.clickLoginBtn()
+            self.lv.info("Login Successful")
             self.rp=regPatient(self.driver)
             self.rp.clickRegPatient()
             #self.rp.setGiven(excel.getDataFromExcel(1,1))
@@ -63,5 +66,12 @@ class Test_080_regPatient:
             self.rp.clickSubmit()
         except Exception as exceptionMessage:
             print("====>You have not given proper xpath or id <===="+str(exceptionMessage))
-        #finally:
-            #self.rp.clickLogoutLink()
+            self.lv.critical("Noticed some error while running")
+        finally:
+            self.rp.clickLogoutLink()
+            self.lv.info("LogOut Successful")
+            self.lv.info("Test RegPatient execution completed.")
+
+
+
+
